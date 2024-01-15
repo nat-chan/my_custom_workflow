@@ -1,0 +1,272 @@
+{
+  "4": {
+    "inputs": {
+      "ckpt_name": "sdxl/animeIllustDiffusion_v06.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple"
+  },
+  "5": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage"
+  },
+  "6": {
+    "inputs": {
+      "text": "anime, 1girl, white background, close up face, looking at viewer",
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "7": {
+    "inputs": {
+      "text": "(embedding:negativeXL_D:1.0), (embedding:unaestheticXL_Sky3.1:1.0), text, signature",
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "10": {
+    "inputs": {
+      "add_noise": "enable",
+      "noise_seed": 697587555253839,
+      "steps": 25,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "start_at_step": 0,
+      "end_at_step": 20,
+      "return_with_leftover_noise": "enable",
+      "model": [
+        "59",
+        0
+      ],
+      "positive": [
+        "50",
+        0
+      ],
+      "negative": [
+        "50",
+        1
+      ],
+      "latent_image": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "KSamplerAdvanced"
+  },
+  "11": {
+    "inputs": {
+      "add_noise": "disable",
+      "noise_seed": 0,
+      "steps": 25,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "start_at_step": 20,
+      "end_at_step": 10000,
+      "return_with_leftover_noise": "disable",
+      "model": [
+        "12",
+        0
+      ],
+      "positive": [
+        "15",
+        0
+      ],
+      "negative": [
+        "16",
+        0
+      ],
+      "latent_image": [
+        "10",
+        0
+      ]
+    },
+    "class_type": "KSamplerAdvanced"
+  },
+  "12": {
+    "inputs": {
+      "ckpt_name": "sd_xl_refiner_1.0.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple"
+  },
+  "15": {
+    "inputs": {
+      "text": "anime, 1girl, white background, close up face, looking at viewer",
+      "clip": [
+        "12",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "16": {
+    "inputs": {
+      "text": "(embedding:negativeXL_D:1.0), (embedding:unaestheticXL_Sky3.1:1.0), text, signature",
+      "clip": [
+        "12",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "17": {
+    "inputs": {
+      "samples": [
+        "11",
+        0
+      ],
+      "vae": [
+        "12",
+        2
+      ]
+    },
+    "class_type": "VAEDecode"
+  },
+  "19": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "17",
+        0
+      ]
+    },
+    "class_type": "SaveImage"
+  },
+  "49": {
+    "inputs": {
+      "control_net_name": "sd_control_collection/sai_xl_recolor_256lora.safetensors"
+    },
+    "class_type": "ControlNetLoader"
+  },
+  "50": {
+    "inputs": {
+      "strength": 1,
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "control_net": [
+        "49",
+        0
+      ],
+      "image": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced"
+  },
+  "51": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "megapixels": 1,
+      "image": [
+        "53",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels"
+  },
+  "53": {
+    "inputs": {
+      "image": "input_0.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage"
+  },
+  "55": {
+    "inputs": {
+      "image": "skin32.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage"
+  },
+  "57": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "megapixels": 1,
+      "image": [
+        "55",
+        0
+      ]
+    },
+    "class_type": "ImageScaleToTotalPixels"
+  },
+  "58": {
+    "inputs": {
+      "ipadapter_file": "ip-adapter_sdxl_vit-h.bin"
+    },
+    "class_type": "IPAdapterModelLoader"
+  },
+  "59": {
+    "inputs": {
+      "weight": 1,
+      "noise": 0,
+      "ipadapter": [
+        "58",
+        0
+      ],
+      "clip_vision": [
+        "60",
+        0
+      ],
+      "image": [
+        "57",
+        0
+      ],
+      "model": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "IPAdapterApply"
+  },
+  "60": {
+    "inputs": {
+      "clip_name": "sd15_clip.safetensors"
+    },
+    "class_type": "CLIPVisionLoader"
+  },
+  "61": {
+    "inputs": {
+      "pixels": [
+        "62",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    },
+    "class_type": "VAEEncode"
+  },
+  "62": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "width": 1024,
+      "height": 1024,
+      "crop": "disabled",
+      "image": [
+        "55",
+        0
+      ]
+    },
+    "class_type": "ImageScale"
+  }
+}
